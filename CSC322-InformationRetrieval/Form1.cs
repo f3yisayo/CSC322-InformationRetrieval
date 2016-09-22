@@ -7,6 +7,7 @@ namespace CSC322_InformationRetrieval
     {
         public Form1()
         {
+
             InitializeComponent();
         }
 
