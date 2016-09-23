@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Toxy;
 
 namespace CSC322_InformationRetrieval
@@ -12,42 +8,33 @@ namespace CSC322_InformationRetrieval
     class Indexer
     {
         
+        public Indexer(){  }
 
-        public Indexer()
-        {
-            
-        }
-
-        public  string Index(DirectoryInfo directory)
+        public string Index(DirectoryInfo directory)
         {
             StringBuilder builder = new StringBuilder();
             var files = directory.GetFiles("*.txt");
             int docId = 1;
             foreach (var file in files)
             {
-                if (file.Exists)
+                // If the file doesn't exist, skip the current iteration (Thanks Resharper!)
+                if (!file.Exists) continue;
+                //use toxy to extract string from files.
+                var parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                string document = parser.Parse();
+
+                var separators = new[] { ' ', ',', ':', '?', ';','.','\r','\n'};
+                int wordPosition = 1;
+                // Split with separators and ignore empty spaces.
+                foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    //use toxy to extract string from files.
-                    var parser = ParserFactory.CreateText(new ParserContext(file.FullName.ToString()));
-                    string document = parser.Parse();
-
-
-                    var separators = new char[] { ' ', ',', ':', '?', ';','.','\r','\n'};
-                    int wordPosition = 1;
-                    //split with separators and ignore empty spaces.
-                    foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        InvertedIndex.GetInstance().Add(word, new InvertedIndex.Tuple(docId, wordPosition++));
-                    }
-
-                   docId++;
+                    InvertedIndex.GetInstance().Add(word, new InvertedIndex.Tuple(docId, wordPosition++));
                 }
-                
+
+                docId++;
             }
 
             return InvertedIndex.GetInstance().ToString();
-
-            
         }
     }
 }

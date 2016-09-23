@@ -16,9 +16,7 @@ namespace CSC322_InformationRetrieval
         private void button1_Click(object sender, System.EventArgs e)
         {
             //display indexing results
-            textBox1.Text = new Indexer().Index(new System.IO.DirectoryInfo(@"C:\Users\Philip\Videos"));
-
-            
+            textBox1.Text = new Indexer().Index(new System.IO.DirectoryInfo(@"C:\Users\Feyisayo\Downloads"));
         }
 
     }
