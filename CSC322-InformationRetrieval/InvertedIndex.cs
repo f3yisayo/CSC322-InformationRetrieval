@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace CSC322_InformationRetrieval
 {
-    class InvertedIndex
+     class InvertedIndex
     {
-        internal class Tuple
+        public class Tuple 
         {
-            private int fieldId;
+            private  int fieldId = 0;
             private int position;
 
             public int FieldId { get; private set; }
             public int Position { get; private set; }
-            Tuple(int fieldId, int position)
+            public Tuple(int fieldId, int position)
             {
                 this.fieldId = fieldId;
                 this.position = position;
@@ -24,22 +24,24 @@ namespace CSC322_InformationRetrieval
             {
                 return "(" + fieldId + "," + position + ")";
             }
+          
         }
 
-        internal class TupleComparer : IComparer<Tuple>
+        private readonly Dictionary<string, List<Tuple>> invertedIndex = new Dictionary<string, List<Tuple>>();
+        private static InvertedIndex myIndex = null;
+        
+        private InvertedIndex()
         {
-            public int Compare(Tuple x, Tuple y)
-            {
-                return x.FieldId.CompareTo(y.FieldId);
-            }
-        }
 
-        private readonly Dictionary<string, SortedSet<Tuple>> invertedIndex;
-        public InvertedIndex()
+        }
+        public  static InvertedIndex GetInstance()
         {
-            invertedIndex = new Dictionary<string, SortedSet<Tuple>>();
+            //returns only one instance of an inverted index for every word to be indexed 
+            if (myIndex == null)
+                 myIndex = new InvertedIndex();
+            
+           return myIndex;
         }
-
         public void Add(string key, Tuple idPos)
         {
             if (invertedIndex.ContainsKey(key))
@@ -48,7 +50,7 @@ namespace CSC322_InformationRetrieval
             }
             else
             {
-                var list = new SortedSet<Tuple>(new TupleComparer()) { idPos };
+                var list = new List<Tuple>() { idPos };
                 invertedIndex.Add(key, list);
             }
         }
@@ -61,6 +63,27 @@ namespace CSC322_InformationRetrieval
                 return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            //shows what has been indexed.
+            StringBuilder builder = new StringBuilder();
+            foreach (var key in invertedIndex.Keys)
+            {
+                builder.AppendLine("[" + key + "]" + "=>" + PrintSet(invertedIndex[key]));
+            }
+            return builder.ToString();
+        }
+
+        private string PrintSet(List<Tuple> set)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (var value in set)
+            {
+                builder.Append(value + " ");
+            }
+            return builder.ToString();
         }
         //public static string Test()
         //{
