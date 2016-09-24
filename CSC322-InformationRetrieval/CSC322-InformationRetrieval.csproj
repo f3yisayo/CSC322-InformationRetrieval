@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Indexer.cs" />
     <Compile Include="InvertedIndex.cs" />
+    <Compile Include="PorterStemmer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
