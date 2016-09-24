@@ -23,7 +23,8 @@ namespace CSC322_InformationRetrieval
                 var parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                 string document = parser.Parse();
 
-                var separators = new[] { ' ', ',', ':', '?', ';','.','\r','\n'};
+                // \u2022 is the unicode for a bullet symbol. 
+                var separators = new[] { ' ', '\u2022', '’', '\"', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';','.','\r','\n'};
                 int wordPosition = 1;
                 // Split with separators and ignore empty spaces.
                 foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
