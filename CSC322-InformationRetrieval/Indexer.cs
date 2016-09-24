@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Toxy;
 
@@ -13,7 +14,13 @@ namespace CSC322_InformationRetrieval
         public string Index(DirectoryInfo directory)
         {
             StringBuilder builder = new StringBuilder();
-            var files = directory.GetFiles("*.txt");
+            
+            //Get files with specified extensions.
+            string[] extensions = new[] { ".txt", ".pdf", ".doc", ".docx", ".ppt", ".ppts", ".xls", ".xlsx", ".html", ".xml" };
+            FileInfo[] files =
+                directory.EnumerateFiles("*", SearchOption.AllDirectories)
+                     .Where(f => extensions.Contains(f.Extension.ToLower()))
+                     .ToArray();
             int docId = 1;
             foreach (var file in files)
             {
