@@ -16,6 +16,7 @@ namespace CSC322_InformationRetrieval
         public string Index(DirectoryInfo directory)
         {
             StringBuilder builder = new StringBuilder();
+            PorterStemmer stemmer = new PorterStemmer();//create the stemmer object
             
             //Get files with specified extensions.
             string[] extensions = new[] { ".txt", ".pdf", ".doc", ".docx", ".ppt", ".ppts", ".xls", ".xlsx", ".html", ".xml" };
@@ -42,7 +43,8 @@ namespace CSC322_InformationRetrieval
                     // Split with separators and ignore empty spaces.
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        InvertedIndex.GetInstance().Add(word, new InvertedIndex.Tuple(docId, wordPosition++));
+                        //stem word before adding it to the inverted index
+                        InvertedIndex.GetInstance().Add(stemmer.StemWord(word), new InvertedIndex.Tuple(docId, wordPosition++));
                     }
                 }
                 catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
@@ -56,4 +58,5 @@ namespace CSC322_InformationRetrieval
             return InvertedIndex.GetInstance().ToString();
         }
     }
+
 }
