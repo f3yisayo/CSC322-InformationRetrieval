@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using ICSharpCode.SharpZipLib.Zip;
 using Toxy;
 
 namespace CSC322_InformationRetrieval
@@ -28,15 +30,24 @@ namespace CSC322_InformationRetrieval
                 if (!file.Exists) continue;
                 //use toxy to extract string from files.
                 var parser = ParserFactory.CreateText(new ParserContext(file.FullName));
-                string document = parser.Parse();
-
                 // \u2022 is the unicode for a bullet symbol. 
-                var separators = new[] { ' ', '\u2022', '’', '\"', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';','.','\r','\n'};
-                int wordPosition = 1;
-                // Split with separators and ignore empty spaces.
-                foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
+                var separators = new[]
                 {
-                    InvertedIndex.GetInstance().Add(word, new InvertedIndex.Tuple(docId, wordPosition++));
+                    ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.', '\r', '\n'
+                };
+                int wordPosition = 1;
+                try
+                {
+                    var document = parser.Parse();
+                    // Split with separators and ignore empty spaces.
+                    foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        InvertedIndex.GetInstance().Add(word, new InvertedIndex.Tuple(docId, wordPosition++));
+                    }
+                }
+                catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
+                {
+                    MessageBox.Show("Please close all programs using the files you want to search.");
                 }
 
                 docId++;
