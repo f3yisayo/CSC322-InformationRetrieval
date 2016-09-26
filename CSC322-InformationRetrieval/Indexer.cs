@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
 using Toxy;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace CSC322_InformationRetrieval
 {
@@ -20,7 +21,7 @@ namespace CSC322_InformationRetrieval
             PorterStemmer stemmer = new PorterStemmer();//create the stemmer object
 
             //Get files with specified extensions.
-            string[] extensions = new[] { ".txt", ".pdf", ".doc", ".docx", ".ppt", ".ppts", ".xls", ".xlsx", ".html", ".xml" };
+            string[] extensions = new[] { ".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html", ".xml" };
             FileInfo[] files =
                 directory.EnumerateFiles("*", SearchOption.AllDirectories)
                      .Where(f => extensions.Contains(f.Extension.ToLower()))
@@ -30,8 +31,7 @@ namespace CSC322_InformationRetrieval
             {
                 // If the file doesn't exist, skip the current iteration (Thanks Resharper!)
                 if (!file.Exists) continue;
-                //use toxy to extract string from files.
-                var parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                
                 // \u2022 is the unicode for a bullet symbol. 
                 var separators = new[]
                 {
@@ -39,24 +39,42 @@ namespace CSC322_InformationRetrieval
                 };
                 int wordPosition = 1;
                 string document;
+                ITextParser parser;
                 try
                 {
+
+                    //use toxy to extract string from files.
+                    //parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                     //checks if file has an html or xml extension.
                     if (file.Extension == ".html" || file.Extension == ".xml")
+                    {
                         document = FilesWithoutTags(file);
+                    }
+                    else if (file.Extension == ".pptx")
+                    {
+                        document = ExtractPptText(file);
+                    }
                     else
+                    {
+                        parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                         document = parser.Parse();
+                    }
+                        
 
                     // Split with separators and ignore empty spaces.
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
                         //stems word before adding it to the inverted index.
-                        InvertedIndex.GetInstance().Add(stemmer.StemWord(word), new InvertedIndex.Tuple(docId, wordPosition++));
+                        InvertedIndex.GetInstance().Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
                     }
                 }
                 catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
                 {
                     MessageBox.Show("Please close all programs using the files you want to search.");
+                }
+                catch (Exception e) when (e is InvalidDataException)
+                {
+                    MessageBox.Show("Invalid file format.");
                 }
 
                 docId++;
@@ -98,6 +116,31 @@ namespace CSC322_InformationRetrieval
                 {
                     reader.Close();
                 }
+            }
+            return result.ToString();
+        }
+
+        private static string ExtractPptText(FileInfo file)
+        {
+            StringBuilder result = new StringBuilder();
+
+            var parser = ParserFactory.CreateSlideshow(new ParserContext(file.FullName));
+            var slides = parser.Parse();
+
+            for (int i = 0; i < slides.Slides.Count; i++)
+            {
+                result.Append(ConcatListstring(slides.Slides[i].Texts));
+            }
+
+            return result.ToString();
+        }
+
+        private static string ConcatListstring(List<string> inputString)
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (var word in inputString)
+            {
+                result.Append(word.Trim()).Append(" ");
             }
             return result.ToString();
         }
