@@ -13,42 +13,50 @@ namespace CSC322_InformationRetrieval
     class Indexer
     {
         private const string Charset = "windows-1251";
-        public Indexer() { }
+
+        public Indexer()
+        {
+        }
 
         public string Index(DirectoryInfo directory)
         {
             StringBuilder builder = new StringBuilder();
-            PorterStemmer stemmer = new PorterStemmer();//create the stemmer object
+            PorterStemmer stemmer = new PorterStemmer(); //create the stemmer object
 
             //Get files with specified extensions.
-            string[] extensions = new[] { ".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html", ".xml" };
+            string[] extensions = new[]
+                {".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html", ".xml"};
             FileInfo[] files =
                 directory.EnumerateFiles("*", SearchOption.AllDirectories)
-                     .Where(f => extensions.Contains(f.Extension.ToLower()))
-                     .ToArray();
+                    .Where(f => extensions.Contains(f.Extension.ToLower()))
+                    .ToArray();
+
             int docId = 1;
+            int wordPosition = 1;
             foreach (var file in files)
             {
                 // If the file doesn't exist, skip the current iteration (Thanks Resharper!)
                 if (!file.Exists) continue;
-                
+
                 // \u2022 is the unicode for a bullet symbol. 
                 var separators = new[]
                 {
-                    ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.', '\r', '\n'
+                    ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.',
+                    '\r', '\n'
                 };
-                int wordPosition = 1;
-                string document;
-                ITextParser parser;
                 try
                 {
-
                     //use toxy to extract string from files.
                     //parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                     //checks if file has an html or xml extension.
+
+                    string document;
+                    ITextParser parser;
                     if (file.Extension == ".html" || file.Extension == ".xml")
                     {
-                        document = FilesWithoutTags(file);
+                        parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                        string textWithTags = parser.Parse();
+                        document = RemoveAllTags(textWithTags);
                     }
                     else if (file.Extension == ".pptx")
                     {
@@ -59,22 +67,22 @@ namespace CSC322_InformationRetrieval
                         parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                         document = parser.Parse();
                     }
-                        
 
                     // Split with separators and ignore empty spaces.
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
                         //stems word before adding it to the inverted index.
-                        InvertedIndex.GetInstance().Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
+                        InvertedIndex.GetInstance()
+                            .Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
                     }
                 }
                 catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
                 {
-                    MessageBox.Show("Please close all programs using the files you want to search.");
+                    MessageBox.Show(@"Please close all programs using the files you want to search.");
                 }
                 catch (Exception e) when (e is InvalidDataException)
                 {
-                    MessageBox.Show("Invalid file format.");
+                    MessageBox.Show(@"Invalid file format.");
                 }
 
                 docId++;
@@ -88,36 +96,6 @@ namespace CSC322_InformationRetrieval
             //starts with < sees zero or more characters which are not > and ends with >
             string output = Regex.Replace(inputString, "<[^>]*>", "");
             return output;
-        }
-
-        private string FilesWithoutTags(FileInfo inputFile)
-        {
-            StringBuilder result = new StringBuilder();
-            StreamReader reader = null;
-
-            try
-            {
-                Encoding encoding = Encoding.GetEncoding(Charset);
-                reader = new StreamReader(inputFile.FullName, encoding);
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    line = RemoveAllTags(line);//replaces the tag elements in each line of the file with an empty space. 
-                    result.AppendLine(line);
-                }
-            }
-            catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
-            {
-                MessageBox.Show("Please close all programs using the files you want to search.");
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
-            return result.ToString();
         }
 
         private static string ExtractPptxText(FileInfo file)
@@ -145,8 +123,4 @@ namespace CSC322_InformationRetrieval
             return result.ToString();
         }
     }
-
-
 }
-
-
