@@ -52,7 +52,7 @@ namespace CSC322_InformationRetrieval
                     }
                     else if (file.Extension == ".pptx")
                     {
-                        document = ExtractPptText(file);
+                        document = ExtractPptxText(file);
                     }
                     else
                     {
@@ -120,7 +120,7 @@ namespace CSC322_InformationRetrieval
             return result.ToString();
         }
 
-        private static string ExtractPptText(FileInfo file)
+        private static string ExtractPptxText(FileInfo file)
         {
             StringBuilder result = new StringBuilder();
 
