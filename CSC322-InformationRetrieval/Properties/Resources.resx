@@ -114,4 +114,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Indexer_Index_Please_close_all_programs_using_the_files_you_want_to_search_" xml:space="preserve">
+    <value>Please close all programs using the files you want to search.</value>
+  </data>
 </root>
