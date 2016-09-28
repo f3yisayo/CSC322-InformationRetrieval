@@ -91,7 +91,7 @@ namespace CSC322_InformationRetrieval
         private string RemoveAllTags(string inputString)
         {
             //starts with < sees zero or more characters which are not > and ends with >
-            string output = inputString.Replace("<[^>]*>", "");
+            string output = Regex.Replace(inputString, "<[^>]*>", "");
             return output;
         }
 
