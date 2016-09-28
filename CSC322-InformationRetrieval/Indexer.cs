@@ -12,15 +12,12 @@ namespace CSC322_InformationRetrieval
 {
     class Indexer
     {
-        private const string Charset = "windows-1251";
-
         public Indexer()
         {
         }
 
         public string Index(DirectoryInfo directory)
         {
-            StringBuilder builder = new StringBuilder();
             PorterStemmer stemmer = new PorterStemmer(); //create the stemmer object
 
             //Get files with specified extensions.
@@ -94,7 +91,7 @@ namespace CSC322_InformationRetrieval
         private string RemoveAllTags(string inputString)
         {
             //starts with < sees zero or more characters which are not > and ends with >
-            string output = Regex.Replace(inputString, "<[^>]*>", "");
+            string output = inputString.Replace("<[^>]*>", "");
             return output;
         }
 

@@ -3,18 +3,20 @@ using System.Text;
 
 namespace CSC322_InformationRetrieval
 {
-    class InvertedIndex
+    public class InvertedIndex
     {
         private readonly Dictionary<string, List<Tuple>> invertedIndex = new Dictionary<string, List<Tuple>>();
         private static InvertedIndex myIndex;
 
-        private InvertedIndex(){}
+        private InvertedIndex()
+        {
+        }
 
         public static InvertedIndex GetInstance()
         {
             // Returns only one instance of an inverted index for every word to be indexed 
-            if (myIndex == null)
-                myIndex = new InvertedIndex();
+            if (myIndex != null) return myIndex;
+            myIndex = new InvertedIndex();
 
             return myIndex;
         }
@@ -32,12 +34,9 @@ namespace CSC322_InformationRetrieval
 
         public bool Remove(string key)
         {
-            if (invertedIndex.ContainsKey(key))
-            {
-                invertedIndex.Remove(key);
-                return true;
-            }
-            return false;
+            if (!invertedIndex.ContainsKey(key)) return false;
+            invertedIndex.Remove(key);
+            return true;
         }
 
         public override string ToString()
@@ -63,11 +62,18 @@ namespace CSC322_InformationRetrieval
 
         public class Tuple
         {
-            private int documentID;
-            private int position;
+            private readonly int documentID;
+            private readonly int position;
 
-            public int DocumentId { get; private set; }
-            public int Position { get; private set; }
+            public int DocumentId
+            {
+                get { return position; }
+            }
+
+            public int Position
+            {
+                get { return position; }
+            }
 
             public Tuple(int documentId, int position)
             {
