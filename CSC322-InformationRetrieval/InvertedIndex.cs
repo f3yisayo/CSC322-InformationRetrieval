@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace CSC322_InformationRetrieval
 {
+    [Serializable]
     public class InvertedIndex
     {
         private readonly Dictionary<string, List<Tuple>> invertedIndex = new Dictionary<string, List<Tuple>>();
         private static InvertedIndex myIndex;
+
 
         private InvertedIndex()
         {
@@ -19,6 +22,16 @@ namespace CSC322_InformationRetrieval
             myIndex = new InvertedIndex();
 
             return myIndex;
+        }
+
+        public List<Tuple> this[string key]
+        {
+            get { return invertedIndex[key]; }
+        }
+
+        public bool ContainTerm(string key)
+        {
+            return invertedIndex.ContainsKey(key);
         }
 
         public void Add(string key, Tuple idPos)
@@ -60,6 +73,7 @@ namespace CSC322_InformationRetrieval
             return builder.ToString();
         }
 
+        [Serializable]
         public class Tuple
         {
             private readonly int documentID;
