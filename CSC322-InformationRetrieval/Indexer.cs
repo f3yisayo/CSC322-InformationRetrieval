@@ -15,7 +15,7 @@ namespace CSC322_InformationRetrieval
     {
         private readonly string pathToIndexTo;
 
-        private readonly List<String> stopwords = new List<string>()
+        private readonly List<string> stopwords = new List<string>()
         {
             "a",
             "able",
@@ -195,8 +195,9 @@ namespace CSC322_InformationRetrieval
                     // Split with separators and ignore empty spaces.
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        //remove stop words.
-                        if (stopwords.Contains(word)) continue;
+                        // Remove stop words and numeric data.
+                        if (stopwords.Contains(word) || Regex.IsMatch(word, "\\d+") ) continue;
+
                         //stems word before adding it to the inverted index.
                         InvertedIndex.GetInstance()
                             .Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
