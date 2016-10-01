@@ -1,12 +1,15 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace CSC322_InformationRetrieval
 {
     public partial class Form1 : Form
     {
-        DialogResult dialogResult;
-        string folderPath;
+        private DialogResult dialogResult;
+        private string indexPath;
+        private string indexFile;
+        private string currentWorkingDirecory;
 
         public Form1()
         {
@@ -18,10 +21,7 @@ namespace CSC322_InformationRetrieval
             // Clear the textbox before displaying anything new
             textBox1.Clear();
             // Display indexed results
-            textBox1.Text = new Indexer(
-                    @"C:\Users\Philip\Documents\Visual Studio 2015\Projects\CSC322-InformationRetrieval\CSC322-InformationRetrieval\bin\temp.dat")
-                .
-                Index(new DirectoryInfo(folderPath));
+            textBox1.Text = new Indexer(indexFile).Index(new DirectoryInfo(indexPath));
         }
 
         private void browseButton_Click(object sender, System.EventArgs e)
@@ -30,9 +30,22 @@ namespace CSC322_InformationRetrieval
 
             if (dialogResult == DialogResult.OK)
             {
-                folderPath = folderBrowserDialog.SelectedPath;
-                pathTextbox.Text = folderPath;
+                indexPath = folderBrowserDialog.SelectedPath;
+                pathTextbox.Text = indexPath;
             }
+        }
+
+        private void Form1_Load(object sender, System.EventArgs e)
+        {
+            // On starting the app, get the current working directory, so it can be used to save the index to disk
+            currentWorkingDirecory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            
+            // After getting the current working directory of the assembly, get the directory name to avoid something like
+            // C:\TestDirectory\SubDirectory\App.exe been treated as a path to save the index file. 
+            var directory = Path.GetDirectoryName(currentWorkingDirecory);
+      
+            indexFile = Path.Combine(directory, "index.dat");
+
         }
     }
 }
