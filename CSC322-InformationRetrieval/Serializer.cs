@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSC322_InformationRetrieval
 {
-    public class Serializer<T> where T : InvertedIndex
+    public class Serializer<T>
     {
         private readonly string path;
 

@@ -196,7 +196,7 @@ namespace CSC322_InformationRetrieval
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
                         // Remove stop words and numeric data.
-                        if (stopwords.Contains(word) || Regex.IsMatch(word, "\\d+") ) continue;
+                        if (stopwords.Contains(word) || Regex.IsMatch(word, "\\d+")) continue;
 
                         //stems word before adding it to the inverted index.
                         InvertedIndex.GetInstance()
@@ -212,10 +212,12 @@ namespace CSC322_InformationRetrieval
                     MessageBox.Show(@"Invalid file format.");
                 }
 
+                FileMatch.GetInstance().Add(docId, file);
                 docId++;
             }
-
+            string pathTostoreFiles = Path.GetDirectoryName(pathToIndexTo) + @"\file.dat";
             new Serializer<InvertedIndex>(pathToIndexTo).Serialize(InvertedIndex.GetInstance());
+            new Serializer<FileMatch>(pathTostoreFiles).Serialize(FileMatch.GetInstance());
             return InvertedIndex.GetInstance().ToString();
         }
 

@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Forms;
-using TextBox = DocumentFormat.OpenXml.Vml.TextBox;
 
 namespace CSC322_InformationRetrieval
 {
