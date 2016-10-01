@@ -8,7 +8,7 @@ namespace CSC322_InformationRetrieval
         private readonly string queryString;
         private readonly InvertedIndex invertedIndex;
 
-        Query(string queryString, string queryPath)
+        public Query(string queryString, string queryPath)
         {
             this.queryString = queryString;
             invertedIndex = new Serializer<InvertedIndex>(queryPath).Deserialize();
@@ -17,17 +17,17 @@ namespace CSC322_InformationRetrieval
         //Handles one word and free text query.
         public SortedSet<int> QueryString()
         {
-            SortedSet<int>[] eachWordsDocIds = {};
+            List<SortedSet<int>> eachWordsDocIds = new List<SortedSet<int>>();
             SortedSet<int> result = new SortedSet<int>();
             var wordsInQuery = queryString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             //separate each word in the query
             for (int index = 0; index < wordsInQuery.Length; index++)
             {
-                eachWordsDocIds[index] = new SortedSet<int>();
-                var word = wordsInQuery[index]; //each word in the query term
-                if (invertedIndex.ContainTerm(WordToTerm(word))) //if the term is present in the invertedIndex
+                eachWordsDocIds.Add(new SortedSet<int>());
+                var term = WordToTerm(wordsInQuery[index]);
+                if (invertedIndex.ContainTerm(term)) //if the term is present in the invertedIndex
                 {
-                    foreach (var tuple in invertedIndex[word])
+                    foreach (var tuple in invertedIndex[term])
                     {
                         eachWordsDocIds[index].Add(tuple.DocumentId);
                         //get the docIds of in the postings list of the term
