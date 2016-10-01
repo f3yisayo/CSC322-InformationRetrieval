@@ -8,12 +8,139 @@ using Toxy;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
+
 namespace CSC322_InformationRetrieval
 {
     class Indexer
     {
-        public Indexer()
+        private readonly string pathToIndexTo;
+
+        private readonly List<String> stopwords = new List<string>()
         {
+            "a",
+            "able",
+            "about",
+            "across",
+            "after",
+            "all",
+            "almost",
+            "also",
+            "am",
+            "among",
+            "an",
+            "and",
+            "any",
+            "are",
+            "as",
+            "at",
+            "be",
+            "because",
+            "been",
+            "but",
+            "by",
+            "can",
+            "cannot",
+            "could",
+            "dear",
+            "did",
+            "do",
+            "does",
+            "either",
+            "else",
+            "ever",
+            "every",
+            "for",
+            "from",
+            "get",
+            "got",
+            "had",
+            "has",
+            "have",
+            "he",
+            "her",
+            "hers",
+            "him",
+            "his",
+            "how",
+            "however",
+            "i",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "its",
+            "just",
+            "least",
+            "let",
+            "like",
+            "likely",
+            "may",
+            "me",
+            "might",
+            "most",
+            "must",
+            "my",
+            "neither",
+            "no",
+            "nor",
+            "not",
+            "of",
+            "off",
+            "often",
+            "on",
+            "only",
+            "or",
+            "other",
+            "our",
+            "own",
+            "rather",
+            "said",
+            "say",
+            "says",
+            "she",
+            "should",
+            "since",
+            "so",
+            "some",
+            "than",
+            "that",
+            "the",
+            "their",
+            "them",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "tis",
+            "to",
+            "too",
+            "twas",
+            "us",
+            "wants",
+            "was",
+            "we",
+            "were",
+            "what",
+            "when",
+            "where",
+            "which",
+            "while",
+            "who",
+            "whom",
+            "why",
+            "will",
+            "with",
+            "would",
+            "yet",
+            "you",
+            "your"
+        };
+
+        public Indexer(string pathToIndexTo)
+        {
+            this.pathToIndexTo = pathToIndexTo;
         }
 
         public string Index(DirectoryInfo directory)
@@ -39,7 +166,7 @@ namespace CSC322_InformationRetrieval
                 var separators = new[]
                 {
                     ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.',
-                    '\r', '\n'
+                    '\r', '\n', '|'
                 };
                 try
                 {
@@ -68,6 +195,8 @@ namespace CSC322_InformationRetrieval
                     // Split with separators and ignore empty spaces.
                     foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
                     {
+                        //remove stop words.
+                        if (stopwords.Contains(word)) continue;
                         //stems word before adding it to the inverted index.
                         InvertedIndex.GetInstance()
                             .Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
@@ -85,6 +214,7 @@ namespace CSC322_InformationRetrieval
                 docId++;
             }
 
+            new Serializer<InvertedIndex>(pathToIndexTo).Serialize(InvertedIndex.GetInstance());
             return InvertedIndex.GetInstance().ToString();
         }
 

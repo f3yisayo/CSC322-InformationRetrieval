@@ -18,7 +18,10 @@ namespace CSC322_InformationRetrieval
             // Clear the textbox before displaying anything new
             textBox1.Clear();
             // Display indexed results
-            textBox1.Text = new Indexer().Index(new DirectoryInfo(folderPath));
+            textBox1.Text = new Indexer(
+                    @"C:\Users\Philip\Documents\Visual Studio 2015\Projects\CSC322-InformationRetrieval\CSC322-InformationRetrieval\bin\temp.dat")
+                .
+                Index(new DirectoryInfo(folderPath));
         }
 
         private void browseButton_Click(object sender, System.EventArgs e)
