@@ -81,7 +81,7 @@ namespace CSC322_InformationRetrieval
 
             public int DocumentId
             {
-                get { return position; }
+                get { return documentID; }
             }
 
             public int Position

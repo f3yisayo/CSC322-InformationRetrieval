@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using TextBox = DocumentFormat.OpenXml.Vml.TextBox;
 
 namespace CSC322_InformationRetrieval
 {
@@ -39,13 +40,19 @@ namespace CSC322_InformationRetrieval
         {
             // On starting the app, get the current working directory, so it can be used to save the index to disk
             currentWorkingDirecory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            
+
             // After getting the current working directory of the assembly, get the directory name to avoid something like
             // C:\TestDirectory\SubDirectory\App.exe been treated as a path to save the index file. 
             var directory = Path.GetDirectoryName(currentWorkingDirecory);
-      
-            indexFile = Path.Combine(directory, "index.dat");
+            if (directory != null) indexFile = Path.Combine(directory, "index.dat");
+        }
 
+
+        private void searchButton_Click(object sender, System.EventArgs e)
+        {
+            string queryString = textBox2.Text.Trim();
+
+            textBox2.Text = new Search(queryString, indexFile).SearchString();
         }
     }
 }
