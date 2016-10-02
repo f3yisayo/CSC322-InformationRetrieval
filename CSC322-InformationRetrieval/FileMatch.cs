@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CSC322_InformationRetrieval
 {
     [Serializable]
-    class FileStorage
+    class FileMatch
     {
         private readonly Dictionary<int, FileInfo> docIdToFile = new Dictionary<int, FileInfo>();
 
-        private static FileStorage docIdToFileInstance;
+        private static FileMatch docIdToFileInstance;
 
 
-        private FileStorage()
+        private FileMatch()
         {
         }
 
-        public static FileStorage GetInstance()
+        public static FileMatch GetInstance()
         {
             // Returns only one instance of an inverted index for every word to be indexed 
             if (docIdToFileInstance != null) return docIdToFileInstance;
-            docIdToFileInstance = new FileStorage();
+            docIdToFileInstance = new FileMatch();
 
             return docIdToFileInstance;
         }
@@ -32,6 +30,11 @@ namespace CSC322_InformationRetrieval
         {
             if (!docIdToFile.ContainsKey(key))
                 docIdToFile[key] = file;
+        }
+
+        public FileInfo this[int docId]
+        {
+            get { return docIdToFile[docId]; }
         }
 
         public bool Remove(int key)

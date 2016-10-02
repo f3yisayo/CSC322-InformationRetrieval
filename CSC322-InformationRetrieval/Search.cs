@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace CSC322_InformationRetrieval
 {
@@ -10,11 +7,14 @@ namespace CSC322_InformationRetrieval
     {
         private readonly string stringToSearch;
         private readonly string pathToSearchFrom;
+        private readonly FileMatch files;
 
         public Search(string stringToSearch, string pathToSearchFrom)
         {
             this.stringToSearch = stringToSearch;
             this.pathToSearchFrom = pathToSearchFrom;
+            string pathTorestoreFiles = Path.GetDirectoryName(pathToSearchFrom) + @"\file.dat";
+            files = new Serializer<FileMatch>(pathTorestoreFiles).Deserialize();
         }
 
 
@@ -31,12 +31,11 @@ namespace CSC322_InformationRetrieval
         public string PrintSet(SortedSet<int> docIds)
         {
             if (docIds.Count == 0) return "No matches!";
-            string result = "[";
+            string result = "";
             foreach (var docId in docIds)
             {
-                result += docId + " ";
+                result += files[docId] + ";";
             }
-            result += "]";
             return result;
         }
     }
