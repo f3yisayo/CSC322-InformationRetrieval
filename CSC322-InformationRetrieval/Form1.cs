@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace CSC322_InformationRetrieval
@@ -9,6 +10,8 @@ namespace CSC322_InformationRetrieval
         private string indexPath;
         private string indexFile;
         private string currentWorkingDirecory;
+
+        // TODO: Remove the InvertedIndex TextBox later
 
         public Form1()
         {
@@ -38,19 +41,43 @@ namespace CSC322_InformationRetrieval
         {
             // On starting the app, get the current working directory, so it can be used to save the index to disk
             currentWorkingDirecory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-            // After getting the current working directory of the assembly, get the directory name to avoid something like
-            // C:\TestDirectory\SubDirectory\App.exe been treated as a path to save the index file. 
             var directory = Path.GetDirectoryName(currentWorkingDirecory);
             if (directory != null) indexFile = Path.Combine(directory, "index.dat");
+            
         }
 
 
         private void searchButton_Click(object sender, System.EventArgs e)
         {
-            string queryString = textBox2.Text.Trim();
+            string queryString = searchTextBox.Text.Trim();
+            Search search = new Search(queryString, indexFile);
 
-            textBox2.Text = new Search(queryString, indexFile).SearchString();
+            if (string.IsNullOrWhiteSpace(searchTextBox.Text))
+            {
+                MessageBox.Show("Invalid Query");
+                return;
+            }
+
+            if (search.DoSearch())
+                listBox1.DataSource = search.matchList;
+            else
+            {
+                listBox1.DataSource = null;
+                MessageBox.Show("No Match found!");
+            }
+
+            // The first file in the listBox should NOT be selected by default.
+            listBox1.SelectedIndex = -1;
+        }
+
+        private void listBox1_DoubleClick(object sender, System.EventArgs e)
+        {
+            if (listBox1.SelectedItem != null)
+            {
+                var selectedFile = listBox1.Text;
+                Debug.WriteLine(indexPath + "\\" + selectedFile);   
+                Process.Start(indexPath + "\\" + selectedFile);
+            }
         }
     }
 }
