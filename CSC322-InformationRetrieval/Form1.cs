@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -54,16 +55,22 @@ namespace CSC322_InformationRetrieval
 
             if (string.IsNullOrWhiteSpace(searchTextBox.Text))
             {
-                MessageBox.Show("Invalid Query");
+                resultsLabel.ForeColor = Color.Crimson;
+                resultsLabel.Text = "Invalid Query";
                 return;
             }
-
-            if (search.DoSearch())
-                listBox1.DataSource = search.matchList;
+            if (search.DoSearch() != null)
+            {
+                listBox1.DataSource = search.DoSearch();
+                resultsLabel.ForeColor = Color.MediumSeaGreen;
+                resultsLabel.Text = listBox1.Items.Count < 2 ? listBox1.Items.Count + " file found" : listBox1.Items.Count + " files found";
+            }
             else
             {
+                // Clear the list
                 listBox1.DataSource = null;
-                MessageBox.Show("No Match found!");
+                resultsLabel.ForeColor = Color.Crimson;
+                resultsLabel.Text = "No match found";
             }
 
             // The first file in the listBox should NOT be selected by default.

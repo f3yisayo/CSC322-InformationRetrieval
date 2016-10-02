@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
+using System.Linq;
 
 namespace CSC322_InformationRetrieval
 {
@@ -10,8 +9,7 @@ namespace CSC322_InformationRetrieval
         private readonly string stringToSearch;
         private readonly string pathToSearchFrom;
         private readonly FileMatch files;
-        public List<string> matchList = new List<string>();
-
+       
         public Search(string stringToSearch, string pathToSearchFrom)
         {
             this.stringToSearch = stringToSearch;
@@ -21,20 +19,15 @@ namespace CSC322_InformationRetrieval
         }
 
 
-        public bool DoSearch()
+        public List<string> DoSearch()
         {
             var query = new Query(stringToSearch, pathToSearchFrom);
             var results = query.QueryString();
 
             if (results.Count == 0)
-                return false;
+                return null;
 
-            foreach (var docId in results)
-            {
-                matchList.Add(files[docId].ToString());
-            }
-
-            return true;
+            return results.Select(docId => files[docId].ToString()).ToList();
         }
 
      }
