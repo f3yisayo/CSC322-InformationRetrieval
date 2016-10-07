@@ -24,7 +24,12 @@ namespace CSC322_InformationRetrieval
             // Clear the textbox before displaying anything new
             textBox1.Clear();
             // Display indexed results
-            textBox1.Text = new Indexer(indexFile).Index(new DirectoryInfo(indexPath));
+            if (indexPath != null)
+                textBox1.Text = new Indexer(indexFile).Index(new DirectoryInfo(indexPath));
+            else
+            {
+                MessageBox.Show(@"Select a path!");
+            }
         }
 
         private void browseButton_Click(object sender, System.EventArgs e)
@@ -44,33 +49,35 @@ namespace CSC322_InformationRetrieval
             currentWorkingDirecory = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(currentWorkingDirecory);
             if (directory != null) indexFile = Path.Combine(directory, "index.dat");
-            
         }
 
 
         private void searchButton_Click(object sender, System.EventArgs e)
         {
+            resultsLabel.Text = "";
             string queryString = searchTextBox.Text.Trim();
             Search search = new Search(queryString, indexFile);
 
             if (string.IsNullOrWhiteSpace(searchTextBox.Text))
             {
                 resultsLabel.ForeColor = Color.Crimson;
-                resultsLabel.Text = "Invalid Query";
+                resultsLabel.Text = @"Invalid Query";
                 return;
             }
-            if (search.DoSearch() != null)
-            {
-                listBox1.DataSource = search.DoSearch();
-                resultsLabel.ForeColor = Color.MediumSeaGreen;
-                resultsLabel.Text = listBox1.Items.Count < 2 ? listBox1.Items.Count + " file found" : listBox1.Items.Count + " files found";
-            }
-            else
+            if (search.DoSearch() == null)
             {
                 // Clear the list
                 listBox1.DataSource = null;
                 resultsLabel.ForeColor = Color.Crimson;
-                resultsLabel.Text = "No match found";
+                resultsLabel.Text = @"No match found";
+            }
+            else
+            {
+                listBox1.DataSource = search.DoSearch();
+                resultsLabel.ForeColor = Color.MediumSeaGreen;
+                resultsLabel.Text = listBox1.Items.Count < 2
+                    ? listBox1.Items.Count + " file found"
+                    : listBox1.Items.Count + " files found";
             }
 
             // The first file in the listBox should NOT be selected by default.
@@ -82,8 +89,8 @@ namespace CSC322_InformationRetrieval
             if (listBox1.SelectedItem != null)
             {
                 var selectedFile = listBox1.Text;
-                Debug.WriteLine(indexPath + "\\" + selectedFile);   
-                Process.Start(indexPath + "\\" + selectedFile);
+                Debug.WriteLine(selectedFile);
+                Process.Start(selectedFile);
             }
         }
     }

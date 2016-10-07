@@ -52,6 +52,43 @@ namespace CSC322_InformationRetrieval
             return true;
         }
 
+        public int TermFrequency(string term, int docId)
+        {
+            int count = 0;
+            if (invertedIndex.ContainsKey(term))
+            {
+                foreach (var tuple in invertedIndex[term])
+                {
+                    if (tuple.DocumentId == docId)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public int NumberOfterms()
+        {
+            return invertedIndex.Count;
+        }
+
+        public int DocumentFrequency(string term)
+        {
+            SortedSet<int> documents = new SortedSet<int>();
+            if (invertedIndex.ContainsKey(term)) //if the term is present in the invertedIndex
+            {
+                foreach (var tuple in invertedIndex[term])
+                {
+                    documents.Add(tuple.DocumentId);
+                    //get the docIds of in the postings list of the term
+                }
+            }
+
+            return documents.Count;
+        }
+
         public override string ToString()
         {
             // Show what has been indexed.

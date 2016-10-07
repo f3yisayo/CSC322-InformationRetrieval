@@ -9,7 +9,7 @@ namespace CSC322_InformationRetrieval
         private readonly string stringToSearch;
         private readonly string pathToSearchFrom;
         private readonly FileMatch files;
-       
+
         public Search(string stringToSearch, string pathToSearchFrom)
         {
             this.stringToSearch = stringToSearch;
@@ -22,13 +22,13 @@ namespace CSC322_InformationRetrieval
         public List<string> DoSearch()
         {
             var query = new Query(stringToSearch, pathToSearchFrom);
-            var results = query.QueryString();
+            var queryResult = query.QueryString();
+            var rankResult = new Ranking(query.EachTermSearched(), queryResult, query.GetInvertedIndex()).Rank();
 
-            if (results.Count == 0)
+            if (rankResult.Count == 0)
                 return null;
 
-            return results.Select(docId => files[docId].ToString()).ToList();
+            return rankResult.Select(docId => files[docId].FullName).ToList();
         }
-
-     }
+    }
 }

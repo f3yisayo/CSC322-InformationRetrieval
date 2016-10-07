@@ -19,7 +19,7 @@ namespace CSC322_InformationRetrieval
         {
             List<SortedSet<int>> eachWordsDocIds = new List<SortedSet<int>>();
             SortedSet<int> result = new SortedSet<int>();
-            var wordsInQuery = queryString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var wordsInQuery = EachTermSearched();
             //separate each word in the query
             for (int index = 0; index < wordsInQuery.Length; index++)
             {
@@ -41,6 +41,16 @@ namespace CSC322_InformationRetrieval
         private string WordToTerm(string word)
         {
             return new PorterStemmer().StemWord(word.ToLower());
+        }
+
+        public InvertedIndex GetInvertedIndex()
+        {
+            return invertedIndex;
+        }
+
+        public string[] EachTermSearched()
+        {
+            return queryString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
