@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CSC322_InformationRetrieval.FileMatch" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAECAAABAAABAAAAAAAAAAAAACQAAA=</HashCode>
+      <FileName>FileMatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Form1" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQABMAASAAABAAAECAAAACQABIiAAAEEQAADAAABA=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Indexer" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAACAAAAEAAAAAAAAAAAAAAAAAAAAgAAAEAAAEAAAA=</HashCode>
+      <FileName>Indexer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.InvertedIndex" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAAAYAAAAAAECAAABAAABgAAAQEAAAAAAAQAAAA=</HashCode>
+      <FileName>InvertedIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.PorterStemmer" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIBAAAAAAACgAAgAAABAIARQAACBEgAAIAAAAIAAA=</HashCode>
+      <FileName>PorterStemmer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Program" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Query" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAEAAAAAAAAAAAAAAAAAAFgAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Query.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Ranking" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACBAAAAAAgAAQAgAAAAAAAAAAAAAAAAAAGAAAAAAAA=</HashCode>
+      <FileName>Ranking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Search" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAgAAAIAA=</HashCode>
+      <FileName>Search.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Serializer&lt;T&gt;" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAACAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Serializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Properties.Resources" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAoA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSC322_InformationRetrieval.Properties.Settings" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="8.25" />
+</ClassDiagram>

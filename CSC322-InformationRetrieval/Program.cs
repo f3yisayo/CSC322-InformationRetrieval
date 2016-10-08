@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
-using Toxy;
 
 namespace CSC322_InformationRetrieval
 {

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace CSC322_InformationRetrieval
 {
-    public partial class Form1 : Form
+    partial class Form1 : Form
     {
         private DialogResult dialogResult;
         private string indexPath;
