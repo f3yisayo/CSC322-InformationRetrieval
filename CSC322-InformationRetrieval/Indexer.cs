@@ -148,8 +148,11 @@ namespace CSC322_InformationRetrieval
             PorterStemmer stemmer = new PorterStemmer(); //create the stemmer object
 
             //Get files with specified extensions.
-            string[] extensions = new[]
-                {".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html", ".xml"};
+            string[] extensions =
+            {
+                ".htm", ".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html",
+                ".xml"
+            };
             FileInfo[] files =
                 directory.EnumerateFiles("*", SearchOption.AllDirectories)
                     .Where(f => extensions.Contains(f.Extension.ToLower()))
@@ -176,7 +179,7 @@ namespace CSC322_InformationRetrieval
 
                     string document;
                     ITextParser parser;
-                    if (file.Extension == ".html" || file.Extension == ".xml")
+                    if (file.Extension == ".html" || file.Extension == ".htm" || file.Extension == ".xml")
                     {
                         parser = ParserFactory.CreateText(new ParserContext(file.FullName));
                         string textWithTags = parser.Parse();

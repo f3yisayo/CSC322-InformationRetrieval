@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSC322_InformationRetrieval
 {
@@ -33,10 +31,11 @@ namespace CSC322_InformationRetrieval
             }
 
             var items = from pair in idToRankValue
-                orderby pair.Value ascending
+                orderby pair.Value descending
                 select pair;
 
-            return items.Select(keyvalue => keyvalue.Key).ToList();
+            List<int> results = items.Select(keyvalue => keyvalue.Key).ToList();
+            return results;
         }
 
         private double LogTermFrequency(string term, int docId)

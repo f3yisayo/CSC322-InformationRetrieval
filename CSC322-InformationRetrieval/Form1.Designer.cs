@@ -77,7 +77,7 @@
             // 
             this.pathTextbox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pathTextbox.Location = new System.Drawing.Point(208, 37);
-            this.pathTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pathTextbox.Margin = new System.Windows.Forms.Padding(2);
             this.pathTextbox.Name = "pathTextbox";
             this.pathTextbox.Size = new System.Drawing.Size(228, 26);
             this.pathTextbox.TabIndex = 3;
@@ -91,7 +91,7 @@
             this.browseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.browseButton.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.browseButton.Location = new System.Drawing.Point(458, 36);
-            this.browseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.browseButton.Margin = new System.Windows.Forms.Padding(2);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(80, 27);
             this.browseButton.TabIndex = 4;
@@ -135,7 +135,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(111, 193);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(325, 169);
             this.listBox1.TabIndex = 8;
@@ -164,6 +164,7 @@
             // 
             // Form1
             // 
+            this.AcceptButton = this.searchButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 488);
@@ -178,7 +179,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
