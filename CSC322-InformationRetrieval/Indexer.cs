@@ -138,90 +138,124 @@ namespace CSC322_InformationRetrieval
             "your"
         };
 
+        private int docId = 1;
+        private int wordPosition = 1;
+        private readonly PorterStemmer stemmer;
+
+        private readonly string[] extensions =
+        {
+            ".htm", ".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html",
+            ".xml"
+        };
+
+        /// <summary>
+        /// Indexer constructor that takes the path to index to
+        /// </summary>
+        /// <param name="pathToIndexTo">path to index to</param>
         public Indexer(string pathToIndexTo)
         {
             this.pathToIndexTo = pathToIndexTo;
+            stemmer = new PorterStemmer(); //create the stemmer object
         }
 
+        private void ProcessFile(FileInfo file)
+        {
+            //if (!file.Exists) continue;
+            if (!extensions.Contains(file.Extension)) return;
+            // \u2022 is the unicode for a bullet symbol. 
+            var separators = new[]
+            {
+                ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.',
+                '\r', '\n', '|'
+            };
+            try
+            {
+                //use toxy to extract string from files.
+                //parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                //checks if file has an html or xml extension.
+
+                string document;
+                ITextParser parser;
+                if (file.Extension == ".html" || file.Extension == ".htm" || file.Extension == ".xml")
+                {
+                    parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                    string textWithTags = parser.Parse();
+                    document = RemoveAllTags(textWithTags);
+                }
+                else if (file.Extension == ".pptx")
+                {
+                    document = ExtractPptxText(file);
+                }
+                else
+                {
+                    parser = ParserFactory.CreateText(new ParserContext(file.FullName));
+                    document = parser.Parse();
+                }
+
+                // Split with separators and ignore empty spaces.
+                foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    // Remove stop words and numeric data.
+                    if (stopwords.Contains(word) || Regex.IsMatch(word, "\\d+")) continue;
+
+                    //stems word before adding it to the inverted index.
+                    InvertedIndex.GetInstance()
+                        .Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
+                }
+            }
+            catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
+            {
+                MessageBox.Show(@"Please close all programs using the files you want to search.");
+            }
+            catch (Exception e) when (e is InvalidDataException)
+            {
+                MessageBox.Show(@"Invalid file format.");
+            }
+
+            FileMatch.GetInstance().Add(docId, file);
+            docId++;
+        }
+
+        /// <summary>
+        /// Index a directory
+        /// </summary>
+        /// <param name="directory">path to the directory</param>
+        /// <returns>Returns nothing</returns>
         public string Index(DirectoryInfo directory)
         {
-            PorterStemmer stemmer = new PorterStemmer(); //create the stemmer object
-
-            //Get files with specified extensions.
-            string[] extensions =
-            {
-                ".htm", ".txt", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".html",
-                ".xml"
-            };
             FileInfo[] files =
                 directory.EnumerateFiles("*", SearchOption.AllDirectories)
                     .Where(f => extensions.Contains(f.Extension.ToLower()))
                     .ToArray();
 
-            int docId = 1;
-            int wordPosition = 1;
+
             foreach (var file in files)
             {
                 // If the file doesn't exist, skip the current iteration (Thanks Resharper!)
                 if (!file.Exists) continue;
-
-                // \u2022 is the unicode for a bullet symbol. 
-                var separators = new[]
-                {
-                    ' ', '\u2022', '’', '\"', '“', '!', '\'', '\\', '/', '_', '(', ')', '-', ',', ':', '?', ';', '.',
-                    '\r', '\n', '|'
-                };
-                try
-                {
-                    //use toxy to extract string from files.
-                    //parser = ParserFactory.CreateText(new ParserContext(file.FullName));
-                    //checks if file has an html or xml extension.
-
-                    string document;
-                    ITextParser parser;
-                    if (file.Extension == ".html" || file.Extension == ".htm" || file.Extension == ".xml")
-                    {
-                        parser = ParserFactory.CreateText(new ParserContext(file.FullName));
-                        string textWithTags = parser.Parse();
-                        document = RemoveAllTags(textWithTags);
-                    }
-                    else if (file.Extension == ".pptx")
-                    {
-                        document = ExtractPptxText(file);
-                    }
-                    else
-                    {
-                        parser = ParserFactory.CreateText(new ParserContext(file.FullName));
-                        document = parser.Parse();
-                    }
-
-                    // Split with separators and ignore empty spaces.
-                    foreach (var word in document.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        // Remove stop words and numeric data.
-                        if (stopwords.Contains(word) || Regex.IsMatch(word, "\\d+")) continue;
-
-                        //stems word before adding it to the inverted index.
-                        InvertedIndex.GetInstance()
-                            .Add(stemmer.StemWord(word.Trim()), new InvertedIndex.Tuple(docId, wordPosition++));
-                    }
-                }
-                catch (Exception e) when (e is IOException || e is NullReferenceException || e is ZipException)
-                {
-                    MessageBox.Show(@"Please close all programs using the files you want to search.");
-                }
-                catch (Exception e) when (e is InvalidDataException)
-                {
-                    MessageBox.Show(@"Invalid file format.");
-                }
-
-                FileMatch.GetInstance().Add(docId, file);
-                docId++;
+                ProcessFile(file);
             }
+            SaveToDisk();
+            return InvertedIndex.GetInstance().ToString();
+        }
+
+        /// <summary>
+        /// Index a document without saving it to disk
+        /// </summary>
+        /// <param name="file">path to file to index</param>
+        public void IndexDoc(FileInfo file)
+        {
+            ProcessFile(file);
+        }
+
+        /// <summary>
+        /// Saves files indexed to disk
+        /// </summary>
+        public void SaveToDisk()
+        {
             string pathTostoreFiles = Path.GetDirectoryName(pathToIndexTo) + @"\file.dat";
             new Serializer<InvertedIndex>(pathToIndexTo).Serialize(InvertedIndex.GetInstance());
             new Serializer<FileMatch>(pathTostoreFiles).Serialize(FileMatch.GetInstance());
-            return InvertedIndex.GetInstance().ToString();
         }
 
         private string RemoveAllTags(string inputString)
