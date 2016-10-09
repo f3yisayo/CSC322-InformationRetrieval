@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace CSC322_InformationRetrieval
         private string indexPath;
         private string indexFile;
         private string currentWorkingDirecory;
+        private int maxHit;
 
         // TODO: Remove the InvertedIndex TextBox later
 
@@ -19,18 +21,6 @@ namespace CSC322_InformationRetrieval
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-            // Clear the textbox before displaying anything new
-            textBox1.Clear();
-            // Display indexed results
-            if (indexPath != null)
-                textBox1.Text = new Indexer(indexFile).Index(new DirectoryInfo(indexPath));
-            else
-            {
-                MessageBox.Show(@"Select a path!");
-            }
-        }
 
         private void browseButton_Click(object sender, System.EventArgs e)
         {
@@ -40,6 +30,9 @@ namespace CSC322_InformationRetrieval
             {
                 indexPath = folderBrowserDialog.SelectedPath;
                 pathTextbox.Text = indexPath;
+                progressBar1.Visible = true;
+                percentageText.Visible = true;
+                backgroundWorker1.RunWorkerAsync();
             }
         }
 
@@ -49,6 +42,9 @@ namespace CSC322_InformationRetrieval
             currentWorkingDirecory = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(currentWorkingDirecory);
             if (directory != null) indexFile = Path.Combine(directory, "index.dat");
+            comboBox1.SelectedIndex = 1;
+            progressBar1.Visible = false;
+            percentageText.Visible = false;
         }
 
 
@@ -64,7 +60,7 @@ namespace CSC322_InformationRetrieval
                 resultsLabel.Text = @"Invalid Query";
                 return;
             }
-            if (search.DoSearch() == null)
+            if (search.DoSearch(maxHit) == null)
             {
                 // Clear the list
                 listBox1.DataSource = null;
@@ -73,7 +69,7 @@ namespace CSC322_InformationRetrieval
             }
             else
             {
-                listBox1.DataSource = search.DoSearch();
+                listBox1.DataSource = search.DoSearch(maxHit);
                 resultsLabel.ForeColor = Color.MediumSeaGreen;
                 resultsLabel.Text = listBox1.Items.Count < 2
                     ? listBox1.Items.Count + " file found"
@@ -92,6 +88,47 @@ namespace CSC322_InformationRetrieval
                 Debug.WriteLine(selectedFile);
                 Process.Start(selectedFile);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            maxHit = int.Parse(comboBox1.SelectedItem.ToString());
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var indexer = new Indexer(indexFile);
+            if (indexPath != null)
+            {
+                var files = new DirectoryInfo(indexPath);
+                int i = 0;
+                int interval = 100/files.GetFiles().Length;
+                foreach (var file in files.GetFiles())
+                {
+                    indexer.IndexDoc(file);
+                    backgroundWorker1.ReportProgress(i);
+                    i += interval;
+                }
+                backgroundWorker1.ReportProgress(i + (99 - i));
+            }
+            indexer.SaveToDisk();
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+            percentageText.Text = e.ProgressPercentage + @" %";
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender,
+            RunWorkerCompletedEventArgs e)
+        {
+            progressBar1.Visible = false;
+            percentageText.Visible = false;
+        }
+
+        private void searchTextBox_TextChanged(object sender, System.EventArgs e)
+        {
         }
     }
 }

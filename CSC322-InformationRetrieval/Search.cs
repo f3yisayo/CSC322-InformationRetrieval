@@ -19,11 +19,11 @@ namespace CSC322_InformationRetrieval
         }
 
 
-        public List<string> DoSearch()
+        public List<string> DoSearch(int maxHit = 10)
         {
             var query = new Query(stringToSearch, pathToSearchFrom);
             var queryResult = query.QueryString();
-            var rankResult = new Ranking(query.EachTermSearched(), queryResult, query.GetInvertedIndex()).Rank();
+            var rankResult = new Ranking(query.EachTermSearched(), queryResult, query.GetInvertedIndex()).Rank(maxHit);
 
             if (rankResult.Count == 0)
                 return null;

@@ -17,7 +17,7 @@ namespace CSC322_InformationRetrieval
             this.resultsFound = resultsFound;
         }
 
-        public List<int> Rank()
+        public List<int> Rank(int maxHit)
         {
             Dictionary<int, double> idToRankValue = new Dictionary<int, double>();
             foreach (var docId in resultsFound)
@@ -34,7 +34,7 @@ namespace CSC322_InformationRetrieval
                 orderby pair.Value descending
                 select pair;
 
-            List<int> results = items.Select(keyvalue => keyvalue.Key).ToList();
+            List<int> results = items.Select(keyvalue => keyvalue.Key).Take(maxHit).ToList();
             return results;
         }
 
