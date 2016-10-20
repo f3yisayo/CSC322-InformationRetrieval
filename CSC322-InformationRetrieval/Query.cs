@@ -5,7 +5,8 @@ using System.Linq;
 namespace CSC322_InformationRetrieval
 {
     /// <summary>
-    /// The Query class
+    /// The Query class.
+    /// Queries strings against the inverted index. It is used by the Search class.
     /// </summary>
     public class Query
     {
@@ -13,10 +14,10 @@ namespace CSC322_InformationRetrieval
         private readonly InvertedIndex invertedIndex;
 
         /// <summary>
-        /// Query contructor
+        ///A two arguement query contructor
         /// </summary>
-        /// <param name="queryString">The string to be querried</param>
-        /// <param name="queryPath">Path to unserialize the inverted index</param>
+        /// <param name="queryString">The string to be queried</param>
+        /// <param name="queryPath">Path to unserialize the inverted index from</param>
         public Query(string queryString, string queryPath)
         {
             this.queryString = queryString;
@@ -24,9 +25,9 @@ namespace CSC322_InformationRetrieval
         }
 
         /// <summary>
-        /// 
+        /// Queries the inverted index
         /// </summary>
-        /// <returns>Returns the document id's that meets the query </returns>
+        /// <returns>Returns the document ids that meets the query</returns>
         public SortedSet<int> QueryString()
         {
             //Handles one word and free text query.
@@ -59,7 +60,7 @@ namespace CSC322_InformationRetrieval
         /// <summary>
         /// Returns the invertedIndex that was queried 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the inverted index object</returns>
         public InvertedIndex GetInvertedIndex()
         {
             return invertedIndex;
@@ -73,7 +74,7 @@ namespace CSC322_InformationRetrieval
         {
             string[] result = queryString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-            return result.Select(x => WordToTerm(x)).ToArray();
+            return result.Select(WordToTerm).ToArray();
         }
     }
 }

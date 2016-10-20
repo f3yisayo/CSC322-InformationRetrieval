@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace CSC322_InformationRetrieval
 {
     /// <summary>
-    /// A generic serializer class
+    /// A generic serializer class.
     /// </summary>
     /// <typeparam name="T">class Type</typeparam>
     public class Serializer<T>
@@ -16,7 +16,7 @@ namespace CSC322_InformationRetrieval
         /// <summary>
         /// Serializer constructor
         /// </summary>
-        /// <param name="path">Path to serialize to</param>
+        /// <param name="path">Path to serialize to.</param>
         public Serializer(string path)
         {
             this.path = path;
@@ -24,9 +24,9 @@ namespace CSC322_InformationRetrieval
         }
 
         /// <summary>
-        /// Serialize  the object specified
+        /// Serialize the object specified.
         /// </summary>
-        /// <param name="objectToSerialize">Object to serialize</param>
+        /// <param name="objectToSerialize">Object to serialize.</param>
         public void Serialize(T objectToSerialize)
         {
             var stream = File.Open(path, FileMode.Create);
@@ -35,9 +35,9 @@ namespace CSC322_InformationRetrieval
         }
 
         /// <summary>
-        /// Deserialize the object initially serialized
+        /// Deserialize the object initially serialized.
         /// </summary>
-        /// <returns>Returns the deserialized object</returns>
+        /// <returns>Returns the deserialized object.</returns>
         public T Deserialize()
         {
             var stream = File.Open(path, FileMode.Open);
