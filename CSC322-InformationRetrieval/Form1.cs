@@ -13,6 +13,7 @@ namespace CSC322_InformationRetrieval
         private string indexFile;
         private string currentWorkingDirecory;
         private int maxHit;
+        private bool indexCanChanged;
 
         // TODO: Remove the InvertedIndex TextBox later
 
@@ -76,6 +77,7 @@ namespace CSC322_InformationRetrieval
                     : listBox1.Items.Count + " files found";
             }
 
+            indexCanChanged = true;
             // The first file in the listBox should NOT be selected by default.
             listBox1.SelectedIndex = -1;
         }
@@ -93,6 +95,32 @@ namespace CSC322_InformationRetrieval
         private void comboBox1_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             maxHit = int.Parse(comboBox1.SelectedItem.ToString());
+            if (indexCanChanged)
+            {
+                resultsLabel.Text = "";
+                string queryString = searchTextBox.Text.Trim();
+                Search search = new Search(queryString, indexFile);
+
+                if (search.DoSearch(maxHit) == null)
+                {
+                    // Clear the list
+                    listBox1.DataSource = null;
+                    resultsLabel.ForeColor = Color.Crimson;
+                    resultsLabel.Text = @"No match found";
+                }
+                else
+                {
+                    listBox1.DataSource = search.DoSearch(maxHit);
+                    resultsLabel.ForeColor = Color.MediumSeaGreen;
+                    resultsLabel.Text = listBox1.Items.Count < 2
+                        ? listBox1.Items.Count + " file found"
+                        : listBox1.Items.Count + " files found";
+                }
+            }
+
+
+            // The first file in the listBox should NOT be selected by default.
+            listBox1.SelectedIndex = -1;
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -105,7 +133,7 @@ namespace CSC322_InformationRetrieval
                 int interval = 100/files.GetFiles().Length;
                 foreach (var file in files.GetFiles())
                 {
-                    indexer.IndexDoc(file);
+                    indexer.IndexFile(file);
                     backgroundWorker1.ReportProgress(i);
                     i += interval;
                 }
@@ -117,7 +145,7 @@ namespace CSC322_InformationRetrieval
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
-            percentageText.Text = e.ProgressPercentage + @" %";
+            percentageText.Text = e.ProgressPercentage + @"%";
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender,

@@ -4,12 +4,21 @@ using System.Linq;
 
 namespace CSC322_InformationRetrieval
 {
-    class Ranking
+    /// <summary>
+    /// Ranks the files found after searching.
+    /// </summary>
+    public class Ranking
     {
         private readonly SortedSet<int> resultsFound;
         private readonly string[] terms;
         private readonly InvertedIndex invertedIndex;
 
+        /// <summary>
+        ///A three arguement ranking class contructor.
+        /// </summary>
+        /// <param name="terms">terms in the query.</param>
+        /// <param name="resultsFound">a list of documents found.</param>
+        /// <param name="invertedIndex">The inverted index.</param>
         public Ranking(string[] terms, SortedSet<int> resultsFound, InvertedIndex invertedIndex)
         {
             this.terms = terms;
@@ -17,6 +26,11 @@ namespace CSC322_InformationRetrieval
             this.resultsFound = resultsFound;
         }
 
+        /// <summary>
+        /// Ranks the documents found from the query according to the TF-IDF weighting.
+        /// </summary>
+        /// <param name="maxHit"></param>
+        /// <returns></returns>
         public List<int> Rank(int maxHit)
         {
             Dictionary<int, double> idToRankValue = new Dictionary<int, double>();
@@ -46,7 +60,7 @@ namespace CSC322_InformationRetrieval
 
         private double InverseDocumentFrequency(string term)
         {
-            return Math.Log10(invertedIndex.NumberOfterms()*1.0/invertedIndex.DocumentFrequency(term));
+            return Math.Log10(invertedIndex.NumberOfDocuments()*1.0/invertedIndex.DocumentFrequency(term));
         }
 
         private double TfIdOfWeightOfTerm(string term, int docId)

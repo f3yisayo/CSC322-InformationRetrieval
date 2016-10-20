@@ -62,7 +62,7 @@
             this.pathTextbox.Location = new System.Drawing.Point(208, 37);
             this.pathTextbox.Margin = new System.Windows.Forms.Padding(2);
             this.pathTextbox.Name = "pathTextbox";
-            this.pathTextbox.Size = new System.Drawing.Size(228, 26);
+            this.pathTextbox.Size = new System.Drawing.Size(246, 26);
             this.pathTextbox.TabIndex = 3;
             // 
             // folderBrowserDialog
@@ -98,7 +98,7 @@
             this.searchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchTextBox.Location = new System.Drawing.Point(208, 117);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(228, 24);
+            this.searchTextBox.Size = new System.Drawing.Size(246, 24);
             this.searchTextBox.TabIndex = 6;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
@@ -187,9 +187,10 @@
             // percentageText
             // 
             this.percentageText.AutoSize = true;
+            this.percentageText.Font = new System.Drawing.Font("Monaco", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.percentageText.Location = new System.Drawing.Point(421, 74);
             this.percentageText.Name = "percentageText";
-            this.percentageText.Size = new System.Drawing.Size(15, 13);
+            this.percentageText.Size = new System.Drawing.Size(16, 17);
             this.percentageText.TabIndex = 15;
             this.percentageText.Text = "%";
             // 
