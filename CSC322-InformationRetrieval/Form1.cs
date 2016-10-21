@@ -14,8 +14,6 @@ namespace CSC322_InformationRetrieval
         private string currentWorkingDirecory;
         private int maxHit;
 
-        // TODO: Remove the InvertedIndex TextBox later
-
         public Form1()
         {
             InitializeComponent();
@@ -43,7 +41,7 @@ namespace CSC322_InformationRetrieval
             var directory = Path.GetDirectoryName(currentWorkingDirecory);
             if (directory != null) indexFile = Path.Combine(directory, "index.dat");
             comboBox1.SelectedIndex = 1;
-            progressBar1.Visible = false;
+            progressBar1.Visible = true;
             percentageText.Visible = false;
         }
 
@@ -124,11 +122,8 @@ namespace CSC322_InformationRetrieval
             RunWorkerCompletedEventArgs e)
         {
             progressBar1.Visible = false;
-            percentageText.Visible = false;
-        }
-
-        private void searchTextBox_TextChanged(object sender, System.EventArgs e)
-        {
+            percentageText.Text = "Indexing Complete";
+            percentageText.ForeColor = Color.MediumSeaGreen;
         }
     }
 }

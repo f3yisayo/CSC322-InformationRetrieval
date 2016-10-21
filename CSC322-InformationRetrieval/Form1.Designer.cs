@@ -49,20 +49,19 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(108, 40);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(144, 49);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 19);
+            this.label1.Size = new System.Drawing.Size(128, 23);
             this.label1.TabIndex = 2;
             this.label1.Text = "Enter Directory:";
             // 
             // pathTextbox
             // 
             this.pathTextbox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pathTextbox.Location = new System.Drawing.Point(208, 37);
-            this.pathTextbox.Margin = new System.Windows.Forms.Padding(2);
+            this.pathTextbox.Location = new System.Drawing.Point(277, 46);
+            this.pathTextbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pathTextbox.Name = "pathTextbox";
-            this.pathTextbox.Size = new System.Drawing.Size(228, 26);
+            this.pathTextbox.Size = new System.Drawing.Size(303, 30);
             this.pathTextbox.TabIndex = 3;
             // 
             // folderBrowserDialog
@@ -73,10 +72,10 @@
             // 
             this.browseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.browseButton.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.browseButton.Location = new System.Drawing.Point(481, 37);
-            this.browseButton.Margin = new System.Windows.Forms.Padding(2);
+            this.browseButton.Location = new System.Drawing.Point(641, 46);
+            this.browseButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.browseButton.Name = "browseButton";
-            this.browseButton.Size = new System.Drawing.Size(122, 27);
+            this.browseButton.Size = new System.Drawing.Size(163, 33);
             this.browseButton.TabIndex = 4;
             this.browseButton.Text = "Browse";
             this.browseButton.UseVisualStyleBackColor = true;
@@ -85,9 +84,10 @@
             // searchButton
             // 
             this.searchButton.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchButton.Location = new System.Drawing.Point(267, 385);
+            this.searchButton.Location = new System.Drawing.Point(356, 474);
+            this.searchButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(100, 33);
+            this.searchButton.Size = new System.Drawing.Size(133, 41);
             this.searchButton.TabIndex = 5;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = true;
@@ -96,20 +96,19 @@
             // searchTextBox
             // 
             this.searchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchTextBox.Location = new System.Drawing.Point(208, 117);
+            this.searchTextBox.Location = new System.Drawing.Point(277, 144);
+            this.searchTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(228, 24);
+            this.searchTextBox.Size = new System.Drawing.Size(303, 29);
             this.searchTextBox.TabIndex = 6;
-            this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(154, 117);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(205, 144);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 19);
+            this.label2.Size = new System.Drawing.Size(65, 23);
             this.label2.TabIndex = 7;
             this.label2.Text = "Search:";
             // 
@@ -117,11 +116,11 @@
             // 
             this.listBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(158, 190);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.listBox1.ItemHeight = 20;
+            this.listBox1.Location = new System.Drawing.Point(211, 234);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(325, 169);
+            this.listBox1.Size = new System.Drawing.Size(432, 204);
             this.listBox1.TabIndex = 8;
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
@@ -129,10 +128,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(154, 157);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(205, 193);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 19);
+            this.label3.Size = new System.Drawing.Size(67, 23);
             this.label3.TabIndex = 9;
             this.label3.Text = "Results:";
             // 
@@ -140,19 +138,19 @@
             // 
             this.resultsLabel.AutoSize = true;
             this.resultsLabel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resultsLabel.Location = new System.Drawing.Point(208, 157);
-            this.resultsLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.resultsLabel.Location = new System.Drawing.Point(277, 193);
             this.resultsLabel.Name = "resultsLabel";
-            this.resultsLabel.Size = new System.Drawing.Size(0, 19);
+            this.resultsLabel.Size = new System.Drawing.Size(0, 23);
             this.resultsLabel.TabIndex = 10;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(478, 100);
+            this.label4.Location = new System.Drawing.Point(637, 123);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 17);
+            this.label4.Size = new System.Drawing.Size(73, 23);
             this.label4.TabIndex = 12;
             this.label4.Text = "Max Hit:";
             // 
@@ -163,10 +161,11 @@
             "5",
             "10",
             "15"});
-            this.comboBox1.Location = new System.Drawing.Point(540, 100);
+            this.comboBox1.Location = new System.Drawing.Point(720, 123);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox1.MaxDropDownItems = 3;
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(63, 21);
+            this.comboBox1.Size = new System.Drawing.Size(83, 24);
             this.comboBox1.TabIndex = 13;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -179,26 +178,27 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(208, 74);
+            this.progressBar1.Location = new System.Drawing.Point(277, 91);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(200, 23);
+            this.progressBar1.Size = new System.Drawing.Size(267, 28);
             this.progressBar1.TabIndex = 14;
             // 
             // percentageText
             // 
             this.percentageText.AutoSize = true;
-            this.percentageText.Location = new System.Drawing.Point(421, 74);
+            this.percentageText.Location = new System.Drawing.Point(561, 91);
+            this.percentageText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.percentageText.Name = "percentageText";
-            this.percentageText.Size = new System.Drawing.Size(15, 13);
+            this.percentageText.Size = new System.Drawing.Size(0, 17);
             this.percentageText.TabIndex = 15;
-            this.percentageText.Text = "%";
             // 
             // Form1
             // 
             this.AcceptButton = this.searchButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 441);
+            this.ClientSize = new System.Drawing.Size(901, 543);
             this.Controls.Add(this.percentageText);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.comboBox1);
@@ -212,7 +212,7 @@
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.pathTextbox);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

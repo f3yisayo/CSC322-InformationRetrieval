@@ -11,9 +11,9 @@ using System.Collections.Generic;
 
 namespace CSC322_InformationRetrieval
 {
-    class Indexer
+    public class Indexer
     {
-        private readonly string pathToIndexTo;
+        public readonly string pathToIndexTo;
 
         private readonly List<string> stopwords = new List<string>()
         {
@@ -158,10 +158,10 @@ namespace CSC322_InformationRetrieval
             stemmer = new PorterStemmer(); //create the stemmer object
         }
 
-        private void ProcessFile(FileInfo file)
+        public string ProcessFile(FileInfo file)
         {
             //if (!file.Exists) continue;
-            if (!extensions.Contains(file.Extension)) return;
+            if (!extensions.Contains(file.Extension)) return "";
             // \u2022 is the unicode for a bullet symbol. 
             var separators = new[]
             {
@@ -214,6 +214,7 @@ namespace CSC322_InformationRetrieval
 
             FileMatch.GetInstance().Add(docId, file);
             docId++;
+            return InvertedIndex.GetInstance().ToString();
         }
 
         /// <summary>
@@ -231,7 +232,7 @@ namespace CSC322_InformationRetrieval
 
             foreach (var file in files)
             {
-                // If the file doesn't exist, skip the current iteration (Thanks Resharper!)
+                // If the file doesn't exist, skip the current iteration
                 if (!file.Exists) continue;
                 ProcessFile(file);
             }
@@ -243,9 +244,9 @@ namespace CSC322_InformationRetrieval
         /// Index a document without saving it to disk
         /// </summary>
         /// <param name="file">path to file to index</param>
-        public void IndexDoc(FileInfo file)
+        public string IndexDoc(FileInfo file)
         {
-            ProcessFile(file);
+            return ProcessFile(file);
         }
 
         /// <summary>
@@ -258,14 +259,14 @@ namespace CSC322_InformationRetrieval
             new Serializer<FileMatch>(pathTostoreFiles).Serialize(FileMatch.GetInstance());
         }
 
-        private string RemoveAllTags(string inputString)
+        public string RemoveAllTags(string inputString)
         {
             //starts with < sees zero or more characters which are not > and ends with >
             string output = Regex.Replace(inputString, "<[^>]*>", "");
             return output;
         }
 
-        private static string ExtractPptxText(FileInfo file)
+        public string ExtractPptxText(FileInfo file)
         {
             StringBuilder result = new StringBuilder();
 
