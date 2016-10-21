@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3251D153-2F29-4845-A532-6CE239ADBE05}</ProjectGuid>
+    <ProjectGuid>{2A7E0395-75E1-409D-A0E6-23C75EF874E7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CSC322_InformationRetrievalTests</RootNamespace>
@@ -51,10 +51,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="IndexerTests.cs" />
     <Compile Include="InvertedIndexTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSC322-InformationRetrieval\CSC322-InformationRetrieval.csproj">

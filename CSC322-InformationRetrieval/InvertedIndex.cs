@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace CSC322_InformationRetrieval
 {
     /// <summary>
     /// The Inverted Index Class encapsulates the inverted index data structure.
-    /// Stores a mapping of document terms to documentId's and the term's position the documnet.
+    /// Stores a mapping of document terms to document ids and the term's position in the documnet.
     /// </summary>
     [Serializable]
     public class InvertedIndex
     {
         private readonly Dictionary<string, List<Tuple>> invertedIndex = new Dictionary<string, List<Tuple>>();
         private static InvertedIndex myIndex;
+        private readonly SortedSet<int> documentFrequency = new SortedSet<int>();
 
 
         private InvertedIndex()
@@ -20,7 +22,7 @@ namespace CSC322_InformationRetrieval
         }
 
         /// <summary>
-        /// Follows the singleton design pattern for returning one instance of the class
+        /// Gets the inverted index
         /// </summary>
         /// <returns>Returns a single instance of the InvertedIndex class</returns>
         public static InvertedIndex GetInstance()
@@ -39,7 +41,11 @@ namespace CSC322_InformationRetrieval
         /// <returns>Returns a list of tuples of document Id's and positions of the term</returns>
         public List<Tuple> this[string key]
         {
-            get { return invertedIndex[key]; }
+            get
+            {
+                Contract.Requires(key != null);
+                return invertedIndex[key];
+            }
         }
 
         /// <summary>
@@ -49,45 +55,53 @@ namespace CSC322_InformationRetrieval
         /// <returns></returns>
         public bool ContainTerm(string key)
         {
+            Contract.Requires(key != null);
             return invertedIndex.ContainsKey(key);
         }
 
         /// <summary>
-        /// 
+        /// Adds a term to the inverted index
         /// </summary>
-        /// <param name="key">The term to be added</param>
+        /// <param name="term">The term to be added</param>
         /// <param name="idPos">A tuple of the the document Id and the position of the term</param>
-        public void Add(string key, Tuple idPos)
+        public void Add(string term, Tuple idPos)
         {
-            if (invertedIndex.ContainsKey(key))
-                invertedIndex[key].Add(idPos);
+            Contract.Requires(term != null);
+            if (invertedIndex.ContainsKey(term))
+            {
+                invertedIndex[term].Add(idPos);
+                documentFrequency.Add(idPos.DocumentId);
+            }
             else
             {
                 var list = new List<Tuple>() {idPos};
-                invertedIndex.Add(key, list);
+                invertedIndex.Add(term, list);
+                documentFrequency.Add(idPos.DocumentId);
             }
         }
 
         /// <summary>
         /// Removes a term in the inverted index
         /// </summary>
-        /// <param name="key">The term being removed</param>
+        /// <param name="term">The term being removed</param>
         /// <returns>Returns a boolean signalling the sucess or failure of the remove method </returns>
-        public bool Remove(string key)
+        public bool Remove(string term)
         {
-            if (!invertedIndex.ContainsKey(key)) return false;
-            invertedIndex.Remove(key);
+            Contract.Requires(term != null);
+            if (!invertedIndex.ContainsKey(term)) return false;
+            invertedIndex.Remove(term);
             return true;
         }
 
         /// <summary>
-        /// Gets the number of time the term occurs in the the document of the specified document Id
+        /// Gets the number of occurrence the term occurs in the the document of the specified document Id
         /// </summary>
         /// <param name="term">The term being counted in the document</param>
         /// <param name="docId">The document id specifying the document</param>
         /// <returns></returns>
         public int TermFrequency(string term, int docId)
         {
+            Contract.Requires(term != null);
             int count = 0;
             if (invertedIndex.ContainsKey(term))
             {
@@ -106,19 +120,21 @@ namespace CSC322_InformationRetrieval
         /// <summary>
         /// Gets the number of terms in the inverted index
         /// </summary>
-        /// <returns>Number of terms in the inverted index</returns>
-        public int NumberOfterms()
+        /// <returns>Number of documnets in the inverted index</returns>
+        public int NumberOfDocuments()
         {
-            return invertedIndex.Count;
+            return documentFrequency.Count;
+            //return invertedIndex.Count;
         }
 
         /// <summary>
         /// Gets the number of documents the term appears in
         /// </summary>
         /// <param name="term">The term being counted</param>
-        /// <returns>Returns the a document count for the term appears in</returns>
+        /// <returns>Returns the a document count for the term it appears in</returns>
         public int DocumentFrequency(string term)
         {
+            Contract.Requires(term != null);
             SortedSet<int> documents = new SortedSet<int>();
             if (invertedIndex.ContainsKey(term)) //if the term is present in the invertedIndex
             {
@@ -142,7 +158,7 @@ namespace CSC322_InformationRetrieval
             StringBuilder builder = new StringBuilder();
             foreach (var key in invertedIndex.Keys)
             {
-                builder.AppendLine("[" + key + "]" + "=>" + PrintSet(invertedIndex[key]));
+                builder.Append("[" + key + "]" + "=>" + PrintSet(invertedIndex[key]));
             }
             return builder.ToString();
         }
@@ -152,13 +168,13 @@ namespace CSC322_InformationRetrieval
             StringBuilder builder = new StringBuilder();
             foreach (var value in set)
             {
-                builder.Append(value + " ");
+                builder.Append(value + "");
             }
             return builder.ToString();
         }
 
         /// <summary>
-        /// A serializable tuple class that stores a documentID, Position pair.
+        /// A serializable tuple class that stores a document id, Position pair.
         /// </summary>
         [Serializable]
         public class Tuple
